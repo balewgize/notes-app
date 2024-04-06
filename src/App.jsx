@@ -14,21 +14,32 @@ export default function App() {
         (notes[0] && notes[0].id) || ""
     )
 
+    useEffect(() => {
+        localStorage.setItem("notes", JSON.stringify(notes))
+    }, [notes])
+
     function createNewNote() {
         const newNote = {
             id: nanoid(),
-            body: "# Type your markdown note's title here"
+            body: "# Type your markdown note's title here",
+            lastModified: Date.now(),
         }
-        setNotes(prevNotes => [newNote, ...prevNotes])
+        setNotes(prevNotes => (
+            [newNote, ...prevNotes].sort((a, b) => b.lastModified - a.lastModified)
+        ))
         setCurrentNoteId(newNote.id)
     }
 
     function updateNote(text) {
-        setNotes(oldNotes => oldNotes.map(oldNote => {
-            return oldNote.id === currentNoteId
-                ? { ...oldNote, body: text }
-                : oldNote
-        }))
+        setNotes(oldNotes => {
+            const updatedNotes = oldNotes.map(oldNote => {
+                return (oldNote.id === currentNoteId)
+                    ? { ...oldNote, body: text, lastModified: Date.now() }
+                    : oldNote
+            })
+
+            return updatedNotes.sort((a, b) => b.lastModified - a.lastModified)
+        })
     }
 
     function findCurrentNote() {
@@ -36,10 +47,6 @@ export default function App() {
             return note.id === currentNoteId
         }) || notes[0]
     }
-
-    useEffect(() => {
-        localStorage.setItem("notes", JSON.stringify(notes))
-    }, [notes])
 
     return (
         <main>
