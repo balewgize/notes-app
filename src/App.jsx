@@ -24,8 +24,8 @@ export default function App() {
             body: "# Type your markdown note's title here",
             lastModified: Date.now(),
         }
-        setNotes(prevNotes => (
-            [newNote, ...prevNotes].sort((a, b) => b.lastModified - a.lastModified)
+        setNotes(oldNotes => (
+            [newNote, ...oldNotes].sort((a, b) => b.lastModified - a.lastModified)
         ))
         setCurrentNoteId(newNote.id)
     }
@@ -40,6 +40,11 @@ export default function App() {
 
             return updatedNotes.sort((a, b) => b.lastModified - a.lastModified)
         })
+    }
+
+    const deleteNote = (event, noteId) => {
+        event.stopPropagation()
+        setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId))
     }
 
     function findCurrentNote() {
@@ -63,6 +68,7 @@ export default function App() {
                             currentNote={findCurrentNote()}
                             setCurrentNoteId={setCurrentNoteId}
                             newNote={createNewNote}
+                            deleteNote={deleteNote}
                         />
                         {
                             currentNoteId &&
