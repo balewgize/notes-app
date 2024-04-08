@@ -2,6 +2,19 @@
 
 Markdown notes app built with React ✍️
 
+### Features
+
+- Write notes in markdown
+
+- Add, update, and delete notes
+
+- Store notes to Firebase database
+
+- Preview your note to see how it looks
+
+- View the demo at [https://notes-app-mde.netlify.app/](https://notes-app-mde.netlify.app/) 
+
+
 ## Install
 
 ```bash
@@ -28,5 +41,4 @@ npm run dev
 - react-split
 - nanoid
 - showdown
-
-TODO: add links and finalize 
+- netlify
